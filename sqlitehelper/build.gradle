@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.library' // Use the id for the Android library plugin
+}
+
+android {
+    namespace 'com.kaungkaung.sqlitehelper'
+    compileSdk 34
+
+    defaultConfig {
+//        applicationId "com.kaungkaung.sqlitehelper"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+}
+
+task createJar(type: Jar) {
+    from({
+        // Use the classes and resources from the output of the release build type
+        fileTree(dir: "$buildDir/intermediates/compiled_classes/release", includes: ["**/*.class"])
+    })
+    archiveFileName.set('kk-sqlite-helper.jar')
+    destinationDirectory.set(file("$buildDir/libs"))
+}
+
+// Ensure the JAR task is executed after the build task
+tasks.named('build').configure {
+    dependsOn createJar
+}
